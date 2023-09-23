@@ -24,4 +24,8 @@ public class User {
             inverseJoinColumns = { @JoinColumn(name = "post_id") }
     )
     private List<Post> participates = new ArrayList<>();
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id")
+    private List<Owner> owners = new ArrayList<>();
 }

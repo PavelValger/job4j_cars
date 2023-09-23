@@ -30,4 +30,8 @@ public class Post {
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "auto_post_id")
     private List<PriceHistory> messengers = new ArrayList<>();
+
+    @ManyToOne
+    @JoinColumn(name = "auto_post_id")
+    private Car car;
 }
