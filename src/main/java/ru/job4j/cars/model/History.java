@@ -5,20 +5,18 @@ import lombok.EqualsAndHashCode;
 import lombok.EqualsAndHashCode.Include;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
-@Table(name = "owners")
-public class Owner {
+@Table(name = "history")
+public class History {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Include
     private int id;
-    private String name;
-
-    @OneToOne
-    @JoinColumn(name = "history_id")
-    private History history;
+    private LocalDate startAt;
+    private LocalDate endAt;
 }
