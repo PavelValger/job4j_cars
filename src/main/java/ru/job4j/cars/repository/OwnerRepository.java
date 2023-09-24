@@ -1,10 +1,19 @@
 package ru.job4j.cars.repository;
 
-import lombok.AllArgsConstructor;
-import org.springframework.stereotype.Repository;
+import ru.job4j.cars.model.Owner;
 
-@Repository
-@AllArgsConstructor
-public class OwnerRepository {
-    private final CrudRepository crudRepository;
+import java.util.Collection;
+import java.util.Optional;
+
+public interface OwnerRepository {
+
+    Optional<Owner> save(Owner owner);
+
+    boolean deleteById(int id);
+
+    void update(Owner owner);
+
+    Optional<Owner> findById(int id);
+
+    Collection<Owner> findAll();
 }
