@@ -7,6 +7,7 @@ import lombok.EqualsAndHashCode.Include;
 import javax.persistence.*;
 
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,7 +22,7 @@ public class Post {
     @Include
     private Integer id;
     private String description;
-    private LocalDateTime created = LocalDateTime.now();
+    private LocalDateTime created = LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS);
 
     @ManyToOne
     @JoinColumn(name = "auto_user_id")
@@ -32,6 +33,10 @@ public class Post {
     private List<PriceHistory> messengers = new ArrayList<>();
 
     @ManyToOne
-    @JoinColumn(name = "auto_post_id")
+    @JoinColumn(name = "car_id")
     private Car car;
+
+    @OneToOne
+    @JoinColumn(name = "file_id")
+    private File file;
 }

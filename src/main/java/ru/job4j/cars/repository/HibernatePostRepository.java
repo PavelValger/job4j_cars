@@ -53,4 +53,35 @@ public class HibernatePostRepository implements PostRepository {
         return crudRepository.query(
                 "from Post p JOIN FETCH p.messengers order by p.id", Post.class);
     }
+
+    /**
+     * Показать объявления за последний день
+     *
+     * @return список объявлений за последний день
+     */
+    public Collection<Post> showPostLastDay() {
+        return crudRepository.query(
+                "FROM Post p JOIN FETCH p.messengers WHERE p.created > current_date", Post.class);
+    }
+
+    /**
+     * Показать объявления с фото.
+     *
+     * @return список объявлений с фото.
+     */
+    public Collection<Post> showPostWithPhoto() {
+        return crudRepository.query(
+                "FROM Post p JOIN FETCH p.messengers WHERE p.file is not null", Post.class);
+    }
+
+    /**
+     * Показать объявления определенной марки
+     * @param brand марка автомобиля
+     * @return список объявлений указанной марки
+     */
+    public Collection<Post> showBrand(String brand) {
+        return crudRepository.query(
+                "FROM Post p JOIN FETCH p.messengers WHERE p.car.name like :fBrand", Post.class,
+                Map.of("fBrand", String.format("%%%s%%", brand)));
+    }
 }

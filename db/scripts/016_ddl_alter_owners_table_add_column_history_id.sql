@@ -1,2 +1,2 @@
 ALTER TABLE owners
-ADD history_id int not null unique references history(id);
+ADD history_id int unique references history(id);

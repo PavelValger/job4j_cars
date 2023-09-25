@@ -21,4 +21,8 @@
     <include file="scripts/014_ddl_alter_auto_post_table_add_column_car_id.sql" relativeToChangelogFile="true"/>
     <include file="scripts/015_ddl_alter_car_table_add_column_owner_id.sql" relativeToChangelogFile="true"/>
     <include file="scripts/016_ddl_alter_owners_table_add_column_history_id.sql" relativeToChangelogFile="true"/>
+    <include file="scripts/017_ddl_create_files_table.sql" relativeToChangelogFile="true"/>
+    <include file="scripts/018_ddl_alter_auto_post_table_add_column_file_id.sql" relativeToChangelogFile="true"/>
+    <include file="scripts/019_ddl_alter_auto_post_table_column_auto_user_id_drop_not_null.sql" relativeToChangelogFile="true"/>
+    <include file="scripts/020_ddl_alter_auto_post_table_column_auto_user_id_set_not_null.sql" relativeToChangelogFile="true"/>
 </databaseChangeLog>
