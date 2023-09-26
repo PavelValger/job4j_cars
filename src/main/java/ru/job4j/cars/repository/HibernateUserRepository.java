@@ -77,7 +77,7 @@ public class HibernateUserRepository implements UserRepository {
      */
     public List<User> findAllOrderById() {
         return crudRepository.query(
-                "from User u JOIN FETCH u.participates JOIN FETCH u.owners order by id asc", User.class);
+                "from User u JOIN FETCH u.participates JOIN FETCH u.owners order by u.id asc", User.class);
     }
 
     /**
@@ -87,7 +87,7 @@ public class HibernateUserRepository implements UserRepository {
      */
     public Optional<User> findById(int userId) {
         return crudRepository.optional(
-                "from User u JOIN FETCH u.participates JOIN FETCH u.owners where id = :fId", User.class,
+                "from User u JOIN FETCH u.participates JOIN FETCH u.owners where u.id = :fId", User.class,
                 Map.of("fId", userId)
         );
     }
@@ -100,7 +100,7 @@ public class HibernateUserRepository implements UserRepository {
      */
     public List<User> findByLikeLogin(String key) {
         return crudRepository.query(
-                "from User u JOIN FETCH u.participates JOIN FETCH u.owners where login like :fKey",
+                "from User u JOIN FETCH u.participates JOIN FETCH u.owners where u.login like :fKey",
                 User.class, Map.of("fKey", String.format("%%%s%%", key))
         );
     }
@@ -113,7 +113,7 @@ public class HibernateUserRepository implements UserRepository {
      */
     public Optional<User> findByLogin(String login) {
         return crudRepository.optional(
-                "from User u JOIN FETCH u.participates JOIN FETCH u.owners where login = :fLogin",
+                "from User u JOIN FETCH u.participates JOIN FETCH u.owners where u.login = :fLogin",
                 User.class, Map.of("fLogin", login)
         );
     }

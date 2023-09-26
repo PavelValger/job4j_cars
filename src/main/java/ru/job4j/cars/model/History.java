@@ -5,7 +5,7 @@ import lombok.EqualsAndHashCode;
 import lombok.EqualsAndHashCode.Include;
 
 import javax.persistence.*;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
@@ -17,6 +17,6 @@ public class History {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Include
     private int id;
-    private LocalDate startAt;
-    private LocalDate endAt;
+    private LocalDateTime startAt;
+    private LocalDateTime endAt;
 }

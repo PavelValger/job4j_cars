@@ -9,7 +9,9 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
@@ -36,7 +38,7 @@ public class Post {
     @JoinColumn(name = "car_id")
     private Car car;
 
-    @OneToOne
-    @JoinColumn(name = "file_id")
-    private File file;
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "auto_post_id")
+    private Set<File> files = new HashSet<>();
 }

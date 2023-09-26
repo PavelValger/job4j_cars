@@ -25,4 +25,6 @@
     <include file="scripts/018_ddl_alter_auto_post_table_add_column_file_id.sql" relativeToChangelogFile="true"/>
     <include file="scripts/019_ddl_alter_auto_post_table_column_auto_user_id_drop_not_null.sql" relativeToChangelogFile="true"/>
     <include file="scripts/020_ddl_alter_auto_post_table_column_auto_user_id_set_not_null.sql" relativeToChangelogFile="true"/>
+    <include file="scripts/021_ddl_alter_auto_post_table_drop_column_file_id.sql" relativeToChangelogFile="true"/>
+    <include file="scripts/022_ddl_alter_files_table_add_column_auto_post_id.sql" relativeToChangelogFile="true"/>
 </databaseChangeLog>
