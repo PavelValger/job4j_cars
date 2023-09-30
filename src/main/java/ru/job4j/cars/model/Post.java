@@ -8,10 +8,7 @@ import javax.persistence.*;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
@@ -32,7 +29,7 @@ public class Post {
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "auto_post_id")
-    private List<PriceHistory> messengers = new ArrayList<>();
+    private List<PriceHistory> priceHistories = new ArrayList<>();
 
     @ManyToOne
     @JoinColumn(name = "car_id")
@@ -40,5 +37,5 @@ public class Post {
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "auto_post_id")
-    private Set<File> files = new HashSet<>();
+    private Set<File> files = new LinkedHashSet<>();
 }

@@ -29,14 +29,6 @@ public class HibernatePostRepository implements PostRepository {
     }
 
     @Override
-    public boolean deleteById(int id) {
-        return crudRepository.numberRowsRequest(
-                "delete Post where id = :fId",
-                Map.of("fId", id)
-        ) > 0;
-    }
-
-    @Override
     public void update(Post post) {
         crudRepository.run(session -> session.merge(post));
     }
@@ -44,7 +36,7 @@ public class HibernatePostRepository implements PostRepository {
     @Override
     public Optional<Post> findById(int id) {
         return crudRepository.optional(
-                "FROM Post p JOIN FETCH p.messengers JOIN FETCH p.files WHERE p.id = :fId", Post.class,
+                "FROM Post p JOIN FETCH p.priceHistories JOIN FETCH p.files WHERE p.id = :fId", Post.class,
                 Map.of("fId", id)
         );
     }
@@ -52,7 +44,7 @@ public class HibernatePostRepository implements PostRepository {
     @Override
     public Collection<Post> findAll() {
         return crudRepository.query(
-                "from Post p JOIN FETCH p.messengers JOIN FETCH p.files order by p.id", Post.class);
+                "from Post p JOIN FETCH p.priceHistories JOIN FETCH p.files order by p.created", Post.class);
     }
 
     /**
@@ -63,7 +55,7 @@ public class HibernatePostRepository implements PostRepository {
     public Collection<Post> showPostLastDay() {
         var localDateTime = LocalDateTime.now();
         return crudRepository.query(
-                "FROM Post p JOIN FETCH p.messengers JOIN FETCH p.files "
+                "FROM Post p JOIN FETCH p.priceHistories JOIN FETCH p.files "
                         + "WHERE p.created > :fLocalDate", Post.class,
                 Map.of("fLocalDate", localDateTime.minusDays(1)));
     }
@@ -75,7 +67,7 @@ public class HibernatePostRepository implements PostRepository {
      */
     public Collection<Post> showPostWithPhoto() {
         return crudRepository.query(
-                "FROM Post p JOIN FETCH p.messengers JOIN FETCH p.files "
+                "FROM Post p JOIN FETCH p.priceHistories JOIN FETCH p.files "
                         + "WHERE p.files.size != 0", Post.class);
     }
 
@@ -87,8 +79,15 @@ public class HibernatePostRepository implements PostRepository {
      */
     public Collection<Post> showBrand(String brand) {
         return crudRepository.query(
-                "FROM Post p JOIN FETCH p.messengers JOIN FETCH p.files "
+                "FROM Post p JOIN FETCH p.priceHistories JOIN FETCH p.files "
                         + "WHERE p.car.name = :fBrand", Post.class,
                 Map.of("fBrand", brand));
+    }
+
+    public boolean deleteById(int id) {
+        return crudRepository.numberRowsRequest(
+                "delete Post where id = :fId",
+                Map.of("fId", id)
+        ) > 0;
     }
 }

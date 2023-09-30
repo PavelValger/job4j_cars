@@ -36,16 +36,32 @@ public class HibernateUserRepository implements UserRepository {
     /**
      * Поиск пользователя по логину и паролю
      *
-     * @param login логин пользователя
+     * @param login    логин пользователя
      * @param password пароль пользователя
      * @return Optional User
      */
     @Override
     public Optional<User> findByLoginAndPassword(String login, String password) {
         return crudRepository.optional(
-                "from User where login = :fLogin and password = :fPassword", User.class,
-                Map.of("fLogin", login,
-                        "fPassword", password)
+                "from User u JOIN FETCH u.participates p JOIN FETCH u.owners "
+                        + "JOIN FETCH p.priceHistories JOIN FETCH p.files "
+                        + "where u.login = :fLogin and u.password = :fPassword", User.class,
+                Map.of("fLogin", login, "fPassword", password)
+        );
+    }
+
+    /**
+     * Найти пользователя по ID
+     *
+     * @return пользователь.
+     */
+    @Override
+    public Optional<User> findById(int userId) {
+        return crudRepository.optional(
+                "from User u JOIN FETCH u.participates p JOIN FETCH u.owners "
+                        + "JOIN FETCH p.priceHistories JOIN FETCH p.files "
+                        + "where u.id = :fId", User.class,
+                Map.of("fId", userId)
         );
     }
 
@@ -63,33 +79,21 @@ public class HibernateUserRepository implements UserRepository {
      *
      * @param userId ID
      */
-    public void delete(int userId) {
-        crudRepository.run(
+    public boolean delete(int userId) {
+        return crudRepository.numberRowsRequest(
                 "delete User where id = :fId",
                 Map.of("fId", userId)
-        );
+        ) > 0;
     }
 
     /**
-     * Список пользователь отсортированных по id.
+     * Список пользователей, отсортированных по id.
      *
      * @return список пользователей.
      */
     public List<User> findAllOrderById() {
         return crudRepository.query(
                 "from User u JOIN FETCH u.participates JOIN FETCH u.owners order by u.id asc", User.class);
-    }
-
-    /**
-     * Найти пользователя по ID
-     *
-     * @return пользователь.
-     */
-    public Optional<User> findById(int userId) {
-        return crudRepository.optional(
-                "from User u JOIN FETCH u.participates JOIN FETCH u.owners where u.id = :fId", User.class,
-                Map.of("fId", userId)
-        );
     }
 
     /**

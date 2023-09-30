@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 import ru.job4j.cars.model.File;
 
+import java.util.Collection;
 import java.util.Map;
 import java.util.Optional;
 
@@ -40,5 +41,11 @@ public class HibernateFileRepository implements FileRepository {
                 "delete File where id = :fId",
                 Map.of("fId", id)
         ) > 0;
+    }
+
+    @Override
+    public Collection<File> findAll() {
+        return crudRepository.query(
+                "from File order by id", File.class);
     }
 }

@@ -9,16 +9,17 @@ import javax.persistence.*;
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
-@Table(name = "owners")
-public class Owner {
+@Table(name = "participates")
+public class Participant {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Include
-    private int id;
-    private String name;
+    private Integer id;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "history_id")
-    private History history;
+    @Column(name = "user_id")
+    private Integer userId;
+
+    @Column(name = "post_id")
+    private Integer postId;
 }

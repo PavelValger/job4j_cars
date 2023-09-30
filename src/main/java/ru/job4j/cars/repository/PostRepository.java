@@ -9,8 +9,6 @@ public interface PostRepository {
 
     Optional<Post> save(Post post);
 
-    boolean deleteById(int id);
-
     void update(Post post);
 
     Optional<Post> findById(int id);
