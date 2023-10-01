@@ -1,11 +1,11 @@
-package ru.job4j.cars.repository;
+package ru.job4j.cars.service;
 
 import ru.job4j.cars.model.Post;
 
 import java.util.Collection;
 import java.util.Optional;
 
-public interface PostRepository {
+public interface PostService {
 
     Optional<Post> save(Post post);
 

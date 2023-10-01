@@ -48,6 +48,20 @@ public class HibernatePostRepository implements PostRepository {
     }
 
     /**
+     * Показать объявления определенной марки
+     *
+     * @param brand марка автомобиля
+     * @return список объявлений указанной марки
+     */
+    @Override
+    public Collection<Post> showBrand(String brand) {
+        return crudRepository.query(
+                "FROM Post p JOIN FETCH p.priceHistories JOIN FETCH p.files "
+                        + "WHERE p.car.name = :fBrand", Post.class,
+                Map.of("fBrand", brand));
+    }
+
+    /**
      * Показать объявления за последний день
      *
      * @return список объявлений за последний день
@@ -69,19 +83,6 @@ public class HibernatePostRepository implements PostRepository {
         return crudRepository.query(
                 "FROM Post p JOIN FETCH p.priceHistories JOIN FETCH p.files "
                         + "WHERE p.files.size != 0", Post.class);
-    }
-
-    /**
-     * Показать объявления определенной марки
-     *
-     * @param brand марка автомобиля
-     * @return список объявлений указанной марки
-     */
-    public Collection<Post> showBrand(String brand) {
-        return crudRepository.query(
-                "FROM Post p JOIN FETCH p.priceHistories JOIN FETCH p.files "
-                        + "WHERE p.car.name = :fBrand", Post.class,
-                Map.of("fBrand", brand));
     }
 
     public boolean deleteById(int id) {
