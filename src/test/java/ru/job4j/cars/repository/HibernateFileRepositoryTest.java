@@ -72,6 +72,6 @@ class HibernateFileRepositoryTest {
     void whenFindAllThenGetSame() {
         File file = getFile();
         fileRepository.save(file);
-        assertThat(fileRepository.findAll()).isEqualTo(List.of(file));
+        assertThat(fileRepository.findAll(List.of(file.getId()))).isEqualTo(List.of(file));
     }
 }

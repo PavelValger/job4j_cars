@@ -31,7 +31,7 @@ public class Post {
     @JoinColumn(name = "auto_post_id")
     private List<PriceHistory> priceHistories = new ArrayList<>();
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "car_id")
     private Car car;
 

@@ -13,5 +13,5 @@ public interface FileRepository {
 
     boolean deleteById(int id);
 
-    Collection<File> findAll();
+    Collection<File> findAll(Collection<Integer> files);
 }

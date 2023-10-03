@@ -8,11 +8,11 @@ import java.util.Optional;
 
 public interface FileService {
 
-    File save(FileDto fileDto);
+    Optional<File> save(FileDto fileDto);
 
     Optional<FileDto> getFileById(int id);
 
     boolean deleteById(int id);
 
-    Collection<File> findAll();
+    Collection<File> findAll(Collection<Integer> files);
 }

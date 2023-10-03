@@ -10,4 +10,5 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PostOne {
+    private Integer id;
 }

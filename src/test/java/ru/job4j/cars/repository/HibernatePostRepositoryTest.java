@@ -80,10 +80,8 @@ class HibernatePostRepositoryTest {
     }
 
     private Car getCar() {
-        HibernateCarRepository hibernateCarRepository = new HibernateCarRepository(new CrudRepository(sf));
         Car car = new Car();
         car.setName("lada");
-        hibernateCarRepository.save(car);
         return car;
     }
 

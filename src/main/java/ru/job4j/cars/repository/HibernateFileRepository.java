@@ -44,8 +44,9 @@ public class HibernateFileRepository implements FileRepository {
     }
 
     @Override
-    public Collection<File> findAll() {
+    public Collection<File> findAll(Collection<Integer> files) {
         return crudRepository.query(
-                "from File order by id", File.class);
+                "from File f where f.id in :fFiles order by f.id", File.class,
+                Map.of("fFiles", files));
     }
 }
