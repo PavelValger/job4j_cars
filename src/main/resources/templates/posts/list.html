@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+
+    <!--  Зависимости Bootstrap-->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/css/bootstrap-icons-1.10.5/bootstrap-icons.css}" rel="stylesheet">
+    <script th:src="@{/js/code.jquery.com_jquery-3.7.0.min.js}"></script>
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+
+    <title>Список всех объявлений</title>
+</head>
+<body>
+<div class="container-fluid p-0">
+    <header th:insert="blocks/header :: header"></header>
+    <div class="container">
+        <nav class="nav nav-pills nav-justified">
+            <a class="nav-link" th:href="@{/posts}">Все объявления</a>
+            <a class="nav-link" th:href="@{/posts/completed}">Фильтр1</a>
+            <a class="nav-link" th:href="@{/posts/fresh}">Фильтр2</a>
+        </nav>
+        <div class="mb-3 row">
+            <div class="col-6"></div>
+            <div class="col-6">
+                <div class="row">
+                    <div class="col-4"><a class="btn btn-secondary w-130" th:href="@{/posts/create}">Добавить
+                        объявление</a></div>
+                </div>
+            </div>
+        </div>
+        <table class="table table-hover">
+            <tbody>
+            <tr th:each="post: ${posts}">
+                <td style="width: 100px;">
+                    <img th:src="@{/files/{fileId}(fileId=${post.fileId})}" width="250" alt="No image"/>
+                </td>
+                <td style="width: 150px; text-align: center;">
+                    <h7><span th:if="${post.status}">Продан</span></h7>
+                    <h7><span th:if="${!post.status}">В наличии</span></h7>
+                </td>
+                <td>
+                    <h3><span th:text="${post.price}"></span></h3>
+                    <h7><span th:text="${post.carName}"></span></h7>
+                    <h7><span th:text="${post.engineName}"></span></h7>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <footer th:insert="blocks/footer :: footer"></footer>
+</div>
+</body>
+</html>

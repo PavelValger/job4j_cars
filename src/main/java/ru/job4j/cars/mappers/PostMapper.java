@@ -39,26 +39,27 @@ public interface PostMapper {
         return car;
     }
 
-    default Post getPostFromPostCreating(PostCreating postCreating, User user) {
+    default Post getPostFromPostCreating(PostCreating postCreating, User user, File file) {
         Post post = new Post();
         post.setDescription(postCreating.getPostDescription());
         post.setUser(user);
         post.getPriceHistories().add(getPriceHistoryFromPostCreating(postCreating));
         post.setCar(getCarFromPostCreating(postCreating));
+        post.getFiles().add(file);
         return post;
     }
 
-    default PostPreview getPostPreviewFromEntities(Post post, PriceHistory priceHistory, Car car,
-                                                   Engine engine, boolean status) {
+    default PostPreview getPostPreviewFromEntities(Post post) {
         PostPreview postPreview = new PostPreview();
         postPreview.setId(post.getId());
-        postPreview.setPrice(priceHistory.getAfter());
-        postPreview.setCarName(car.getName());
-        postPreview.setEngineName(engine.getName());
-        postPreview.setStatus(status);
+        postPreview.setPrice(post.getPriceHistories().get(post.getPriceHistories().size() - 1).getAfter());
+        postPreview.setCarName(post.getCar().getName());
+        postPreview.setEngineName(post.getCar().getEngine().getName());
+        postPreview.setStatus(false);
         Set<File> files = post.getFiles();
         for (File file : files) {
-            postPreview.getFiles().add(file.getId());
+            postPreview.setFileId(file.getId());
+            break;
         }
         return postPreview;
     }

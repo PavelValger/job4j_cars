@@ -1,5 +1,6 @@
 *.iml
 target
 .idea
+files
 /testdb.mv.db
 /testdb.trace.db

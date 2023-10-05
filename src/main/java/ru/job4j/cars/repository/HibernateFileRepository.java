@@ -17,14 +17,14 @@ public class HibernateFileRepository implements FileRepository {
     private final CrudRepository crudRepository;
 
     @Override
-    public Optional<File> save(File file) {
+    public File save(File file) {
         try {
             crudRepository.run(session -> session.persist(file));
-            return Optional.of(file);
+            return Optional.of(file).get();
         } catch (Exception e) {
             LOG.info("Неудачная попытка сохранения файла, Exception in log example", e);
         }
-        return Optional.empty();
+        return file;
     }
 
     @Override
