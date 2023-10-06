@@ -26,4 +26,9 @@ public class SimpleUserService implements UserService {
     public Optional<User> findById(int userId) {
         return userRepository.findById(userId);
     }
+
+    @Override
+    public Optional<User> findOnlyUserById(int userId) {
+        return userRepository.findOnlyUserById(userId);
+    }
 }

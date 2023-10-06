@@ -8,7 +8,9 @@ import java.util.Optional;
 
 public interface FileService {
 
-    File save(FileDto fileDto);
+    File getFileFromFileDto(FileDto fileDto);
+
+    Optional<File> save(FileDto fileDto);
 
     Optional<FileDto> getFileById(int id);
 

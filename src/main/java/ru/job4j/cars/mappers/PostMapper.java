@@ -6,7 +6,9 @@ import ru.job4j.cars.dto.PostCreating;
 import ru.job4j.cars.dto.PostPreview;
 import ru.job4j.cars.model.*;
 
+import java.time.LocalDateTime;
 import java.util.Set;
+import java.util.TimeZone;
 
 @Mapper(componentModel = "spring")
 public interface PostMapper {
@@ -14,13 +16,17 @@ public interface PostMapper {
     @Mapping(target = "name", source = "engineName")
     Engine getEngineFromPostCreating(PostCreating postCreating);
 
-    @Mapping(target = "startAt", source = "historyStartAt")
-    @Mapping(target = "endAt", source = "historyEndAt")
-    History getHistoryFromPostCreating(PostCreating postCreating);
-
     @Mapping(target = "before", source = "priceHistoryAfter")
     @Mapping(target = "after", source = "priceHistoryAfter")
     PriceHistory getPriceHistoryFromPostCreating(PostCreating postCreating);
+
+    default History getHistoryFromPostCreating(PostCreating postCreating) {
+        History history = new History();
+        history.setEndAt(postCreating.getHistoryEndAt());
+        history.setStartAt(LocalDateTime
+                .ofInstant(postCreating.getHistoryStartAt().toInstant(), TimeZone.getDefault().toZoneId()));
+        return history;
+    }
 
     default Owner getOwnerFromPostCreating(PostCreating postCreating) {
         Owner owner = new Owner();

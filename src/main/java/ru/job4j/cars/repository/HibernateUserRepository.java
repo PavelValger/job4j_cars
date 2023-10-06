@@ -43,8 +43,7 @@ public class HibernateUserRepository implements UserRepository {
     @Override
     public Optional<User> findByLoginAndPassword(String login, String password) {
         return crudRepository.optional(
-                "from User u JOIN FETCH u.participates p JOIN FETCH u.owners "
-                        + "JOIN FETCH p.priceHistories JOIN FETCH p.files "
+                "from User u "
                         + "where u.login = :fLogin and u.password = :fPassword", User.class,
                 Map.of("fLogin", login, "fPassword", password)
         );
@@ -60,6 +59,21 @@ public class HibernateUserRepository implements UserRepository {
         return crudRepository.optional(
                 "from User u JOIN FETCH u.participates p JOIN FETCH u.owners "
                         + "JOIN FETCH p.priceHistories JOIN FETCH p.files "
+                        + "where u.id = :fId", User.class,
+                Map.of("fId", userId)
+        );
+    }
+
+    /**
+     * Найти пользователя по ID без полей participates и owners
+     *
+     * @param userId
+     * @return
+     */
+    @Override
+    public Optional<User> findOnlyUserById(int userId) {
+        return crudRepository.optional(
+                "from User u "
                         + "where u.id = :fId", User.class,
                 Map.of("fId", userId)
         );

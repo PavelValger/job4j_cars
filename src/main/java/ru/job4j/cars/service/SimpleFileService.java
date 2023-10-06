@@ -62,13 +62,18 @@ public class SimpleFileService implements FileService {
     }
 
     @Override
-    public File save(FileDto fileDto) {
+    public File getFileFromFileDto(FileDto fileDto) {
         var path = getNewFilePath(fileDto.getName());
         writeFileBytes(path, fileDto.getContent());
         File file = new File();
         file.setName(fileDto.getName());
         file.setPath(path);
-        return file; //fileRepository.save(file);
+        return file;
+    }
+
+    @Override
+    public Optional<File> save(FileDto fileDto) {
+        return fileRepository.save(getFileFromFileDto(fileDto));
     }
 
     @Override

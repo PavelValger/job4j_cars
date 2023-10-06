@@ -7,7 +7,7 @@ import java.util.Optional;
 
 public interface FileRepository {
 
-    File save(File file);
+    Optional<File> save(File file);
 
     Optional<File> findById(int id);
 

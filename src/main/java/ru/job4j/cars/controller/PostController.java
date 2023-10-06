@@ -9,7 +9,6 @@ import ru.job4j.cars.dto.FileDto;
 import ru.job4j.cars.dto.PostCreating;
 import ru.job4j.cars.model.User;
 import ru.job4j.cars.service.PostService;
-import ru.job4j.cars.service.UserService;
 
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
@@ -19,7 +18,6 @@ import java.io.IOException;
 @RequestMapping("/posts")
 public class PostController {
     private final PostService postService;
-    private final UserService userService;
 
     @GetMapping
     public String getAll(Model model) {
@@ -35,13 +33,10 @@ public class PostController {
     @PostMapping("/create")
     public String create(@ModelAttribute PostCreating postCreating,
                          HttpSession session, @RequestParam MultipartFile file, Model model) {
-        //var user = (User) session.getAttribute("user");
-        User user = new User();
-        user.setLogin("test");
-        user.setPassword("test");
-        userService.save(user);
+        var user = (User) session.getAttribute("user");
         try {
-            postService.save(postCreating, user, new FileDto(file.getOriginalFilename(), file.getBytes()));
+            postService.save(postCreating, user,
+                    new FileDto(file.getOriginalFilename(), file.getBytes()));
             return "redirect:/posts";
         } catch (IOException e) {
             model.addAttribute("message", e.getMessage());

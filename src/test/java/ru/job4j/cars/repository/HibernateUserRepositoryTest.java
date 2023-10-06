@@ -161,6 +161,17 @@ class HibernateUserRepositoryTest {
     }
 
     @Test
+    void whenFindOnlyUserByIdThenUser() {
+        var user = getUser();
+        var post = getPost();
+        var owner = getOwner();
+        user.setParticipates(Set.of(post));
+        user.setOwners(Set.of(owner));
+        hibernateUserRepository.save(user);
+        assertThat(hibernateUserRepository.findOnlyUserById(user.getId()).get()).isEqualTo(user);
+    }
+
+    @Test
     void whenDeleteThenTrue() {
         var user = getUser();
         hibernateUserRepository.save(user);
