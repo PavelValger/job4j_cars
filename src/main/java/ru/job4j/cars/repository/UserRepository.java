@@ -12,5 +12,5 @@ public interface UserRepository {
 
     Optional<User> findById(int userId);
 
-    Optional<User> findOnlyUserById(int userId);
+    void update(User user);
 }

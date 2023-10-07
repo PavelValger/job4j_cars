@@ -57,23 +57,8 @@ public class HibernateUserRepository implements UserRepository {
     @Override
     public Optional<User> findById(int userId) {
         return crudRepository.optional(
-                "from User u JOIN FETCH u.participates p JOIN FETCH u.owners "
-                        + "JOIN FETCH p.priceHistories JOIN FETCH p.files "
-                        + "where u.id = :fId", User.class,
-                Map.of("fId", userId)
-        );
-    }
-
-    /**
-     * Найти пользователя по ID без полей participates и owners
-     *
-     * @param userId
-     * @return
-     */
-    @Override
-    public Optional<User> findOnlyUserById(int userId) {
-        return crudRepository.optional(
-                "from User u "
+                "from User u LEFT JOIN FETCH u.participates p LEFT JOIN FETCH u.owners "
+                        + "LEFT JOIN FETCH p.priceHistories LEFT JOIN FETCH p.files "
                         + "where u.id = :fId", User.class,
                 Map.of("fId", userId)
         );
@@ -84,8 +69,23 @@ public class HibernateUserRepository implements UserRepository {
      *
      * @param user пользователь.
      */
+    @Override
     public void update(User user) {
         crudRepository.run(session -> session.merge(user));
+    }
+
+    /**
+     * Найти пользователя по ID без полей participates и owners
+     *
+     * @param userId id пользователя
+     * @return пользователь
+     */
+    public Optional<User> findOnlyUserById(int userId) {
+        return crudRepository.optional(
+                "from User u "
+                        + "where u.id = :fId", User.class,
+                Map.of("fId", userId)
+        );
     }
 
     /**

@@ -12,5 +12,5 @@ public interface UserService {
 
     Optional<User> findById(int userId);
 
-    Optional<User> findOnlyUserById(int userId);
+    void update(User user);
 }

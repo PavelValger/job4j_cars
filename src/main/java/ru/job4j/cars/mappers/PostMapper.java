@@ -45,13 +45,11 @@ public interface PostMapper {
         return car;
     }
 
-    default Post getPostFromPostCreating(PostCreating postCreating, User user, File file) {
+    default Post getPostFromPostCreating(PostCreating postCreating) {
         Post post = new Post();
         post.setDescription(postCreating.getPostDescription());
-        post.setUser(user);
         post.getPriceHistories().add(getPriceHistoryFromPostCreating(postCreating));
         post.setCar(getCarFromPostCreating(postCreating));
-        post.getFiles().add(file);
         return post;
     }
 

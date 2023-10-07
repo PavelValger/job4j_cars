@@ -28,7 +28,7 @@ public class SimpleUserService implements UserService {
     }
 
     @Override
-    public Optional<User> findOnlyUserById(int userId) {
-        return userRepository.findOnlyUserById(userId);
+    public void update(User user) {
+        userRepository.update(user);
     }
 }

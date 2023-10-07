@@ -25,8 +25,11 @@
             <div class="col-6"></div>
             <div class="col-6">
                 <div class="row">
-                    <div class="col-4"><a class="btn btn-secondary w-130" th:href="@{/posts/create}">Добавить
-                        объявление</a></div>
+                    <div class="col-4" th:if="${user.login != 'Гость'}">
+                        <a class="btn btn-secondary w-130" th:href="@{/posts/create}">Добавить объявление</a></div>
+                </div>
+                <div class="row" th:if="${user.login == 'Гость'}">
+                    <h8>Войдите, чтобы добавить объявление</h8>
                 </div>
             </div>
         </div>

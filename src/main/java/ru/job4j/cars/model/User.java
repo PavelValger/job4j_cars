@@ -29,7 +29,7 @@ public class User {
     )
     private Set<Post> participates = new HashSet<>();
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany
     @JoinColumn(name = "user_id")
     private Set<Owner> owners = new HashSet<>();
 }

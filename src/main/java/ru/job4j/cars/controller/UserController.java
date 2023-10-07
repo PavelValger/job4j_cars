@@ -13,14 +13,14 @@ import ru.job4j.cars.service.UserService;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-@Controller
 @RequiredArgsConstructor
+@Controller
 @RequestMapping("/users")
 public class UserController {
     private final UserService userService;
 
     @GetMapping("/register")
-    public String getRegistationPage(Model model) {
+    public String getRegistationPage() {
         return "users/register";
     }
 
@@ -31,7 +31,7 @@ public class UserController {
             model.addAttribute("error", "Пользователь с такой почтой уже существует");
             return "users/register";
         }
-        return "redirect:/login";
+        return "redirect:/users/login";
     }
 
     @GetMapping("/login")

@@ -20,11 +20,23 @@ public class SimplePostService implements PostService {
     private final PostRepository postRepository;
     private final PostMapper postMapper;
     private final FileService fileService;
+    private final UserService userService;
 
     @Override
     public Optional<Post> save(PostCreating postCreating, User user, FileDto image) {
         var file = fileService.getFileFromFileDto(image);
-        return postRepository.save(postMapper.getPostFromPostCreating(postCreating, user, file));
+        var post = postMapper.getPostFromPostCreating(postCreating);
+        post.getFiles().add(file);
+        post.setUser(user);
+        var postSaving = postRepository.save(post);
+        var optionalUser = userService.findById(user.getId());
+        if (postSaving.isPresent() && optionalUser.isPresent()) {
+            var owner = postSaving.get().getCar().getOwner();
+            user = optionalUser.get();
+            user.getOwners().add(owner);
+            userService.update(user);
+        }
+        return postSaving;
     }
 
     @Override

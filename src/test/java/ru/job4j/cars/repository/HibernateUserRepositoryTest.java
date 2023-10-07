@@ -86,8 +86,10 @@ class HibernateUserRepositoryTest {
     }
 
     private Owner getOwner() {
+        HibernateOwnerRepository hor = new HibernateOwnerRepository(new CrudRepository(sf));
         Owner owner = new Owner();
         owner.setName("test");
+        hor.save(owner);
         return owner;
     }
 
