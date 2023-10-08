@@ -40,7 +40,9 @@ public class SimplePostService implements PostService {
     }
 
     @Override
-    public void update(Post post) {
+    public void update(Post post, FileDto image) {
+        var file = fileService.getFileFromFileDto(image);
+        post.getFiles().add(file);
         postRepository.update(post);
     }
 
@@ -58,5 +60,10 @@ public class SimplePostService implements PostService {
     @Override
     public Collection<Post> showBrand(String brand) {
         return postRepository.showBrand(brand);
+    }
+
+    @Override
+    public boolean updateStatus(int id) {
+        return postRepository.updateStatus(id);
     }
 }

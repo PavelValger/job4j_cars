@@ -16,4 +16,6 @@ public interface PostRepository {
     Collection<Post> findAll();
 
     Collection<Post> showBrand(String brand);
+
+    boolean updateStatus(int id);
 }

@@ -72,16 +72,17 @@ class HibernatePostRepositoryTest {
         return user;
     }
 
-    private List<PriceHistory> getPriceHistory() {
+    private Set<PriceHistory> getPriceHistory() {
         PriceHistory priceHistory = new PriceHistory();
         priceHistory.setAfter(1000000);
         priceHistory.setBefore(900000);
-        return List.of(priceHistory);
+        return Set.of(priceHistory);
     }
 
     private Car getCar() {
         Car car = new Car();
         car.setName("lada");
+        car.setBodywork("body");
         return car;
     }
 
@@ -102,6 +103,7 @@ class HibernatePostRepositoryTest {
     private Post getPost() {
         Post post = new Post();
         post.setDescription("test");
+        post.setStatus(false);
         post.setCar(getCar());
         post.setFiles(getFiles());
         post.setUser(getUser());

@@ -19,6 +19,7 @@ public class Car {
     @Include
     private int id;
     private String name;
+    private String bodywork;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "engine_id", foreignKey = @ForeignKey(name = "ENGINE_ID_FK"))

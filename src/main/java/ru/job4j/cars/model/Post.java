@@ -22,6 +22,7 @@ public class Post {
     private Integer id;
     private String description;
     private LocalDateTime created = LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS);
+    private boolean status;
 
     @ManyToOne
     @JoinColumn(name = "auto_user_id")
@@ -29,7 +30,7 @@ public class Post {
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "auto_post_id")
-    private List<PriceHistory> priceHistories = new ArrayList<>();
+    private Set<PriceHistory> priceHistories = new LinkedHashSet<>();
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "car_id")

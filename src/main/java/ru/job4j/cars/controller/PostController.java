@@ -26,7 +26,7 @@ public class PostController {
     }
 
     @GetMapping("/create")
-    public String getCreationPage(Model model) {
+    public String getCreationPage() {
         return "posts/create";
     }
 
@@ -42,5 +42,42 @@ public class PostController {
             model.addAttribute("message", e.getMessage());
             return "errors/404";
         }
+    }
+
+    @GetMapping("/edit/{id}")
+    public String getEditPage(Model model, @PathVariable int id) {
+        var postOptional = postService.findById(id);
+        if (postOptional.isEmpty()) {
+            model.addAttribute("message", "Объявление не найдено");
+            return "errors/404";
+        }
+        model.addAttribute("post", postOptional.get());
+        return "posts/edit";
+    }
+
+    @PostMapping("/edit/{id}")
+    public String update(Model model, @PathVariable int id, @RequestParam MultipartFile[] files) {
+        var postOptional = postService.findById(id);
+        if (postOptional.isEmpty()) {
+            model.addAttribute("message", "Объявление не найдено");
+            return "errors/404";
+        }
+        try {
+            postService.update(postOptional.get(), new FileDto(files[0].getOriginalFilename(), files[0].getBytes()));
+            return "redirect:/posts";
+        } catch (IOException e) {
+            model.addAttribute("message", e.getMessage());
+            return "errors/404";
+        }
+    }
+
+    @GetMapping("/statusSold/{id}")
+    public String updateStatus(Model model, @PathVariable int id) {
+        var isUpdated = postService.updateStatus(id);
+        if (!isUpdated) {
+            model.addAttribute("message", "Объявление не найдено");
+            return "errors/404";
+        }
+        return "redirect:/posts";
     }
 }

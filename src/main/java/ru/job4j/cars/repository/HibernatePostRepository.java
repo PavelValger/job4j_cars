@@ -44,7 +44,9 @@ public class HibernatePostRepository implements PostRepository {
     @Override
     public Collection<Post> findAll() {
         return crudRepository.query(
-                "from Post p JOIN FETCH p.priceHistories JOIN FETCH p.files order by p.created", Post.class);
+                "SELECT DISTINCT p from Post p LEFT JOIN FETCH p.priceHistories "
+                        + "LEFT JOIN FETCH p.files order by p.created desc",
+                Post.class);
     }
 
     /**
@@ -59,6 +61,16 @@ public class HibernatePostRepository implements PostRepository {
                 "FROM Post p JOIN FETCH p.priceHistories JOIN FETCH p.files "
                         + "WHERE p.car.name = :fBrand", Post.class,
                 Map.of("fBrand", brand));
+    }
+
+    @Override
+    public boolean updateStatus(int id) {
+        return crudRepository.numberRowsRequest(
+                "UPDATE Post SET "
+                        + "status = true "
+                        + "WHERE id = :fId",
+                Map.of("fId", id)
+        ) > 0;
     }
 
     /**

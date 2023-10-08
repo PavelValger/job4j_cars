@@ -13,11 +13,13 @@ public interface PostService {
 
     Optional<Post> save(PostCreating postCreating, User user, FileDto image);
 
-    void update(Post post);
+    void update(Post post, FileDto image);
 
     Optional<Post> findById(int id);
 
     Collection<PostPreview> findAll();
 
     Collection<Post> showBrand(String brand);
+
+    boolean updateStatus(int id);
 }

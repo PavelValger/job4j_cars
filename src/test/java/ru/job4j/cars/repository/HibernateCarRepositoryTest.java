@@ -72,6 +72,7 @@ class HibernateCarRepositoryTest {
         car.setEngine(getEngine());
         car.setOwner(getOwner());
         car.setOwners(getOwners());
+        car.setBodywork("body");
         return car;
     }
 

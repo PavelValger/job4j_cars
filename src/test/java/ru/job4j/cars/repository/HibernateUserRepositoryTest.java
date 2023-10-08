@@ -80,7 +80,7 @@ class HibernateUserRepositoryTest {
         priceHistory.setAfter(1000000);
         priceHistory.setBefore(900000);
         post.setFiles(Set.of(file));
-        post.setPriceHistories(List.of(priceHistory));
+        post.setPriceHistories(Set.of(priceHistory));
         postRepository.save(post);
         return post;
     }
