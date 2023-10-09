@@ -16,6 +16,7 @@ public class File {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Include
     private int id;
+    @Include
     private String name;
     private String path;
 }

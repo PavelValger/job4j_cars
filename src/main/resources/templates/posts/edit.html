@@ -33,7 +33,7 @@
                 </div>
             </div>
         </form>
-        <div class="col-4" th:if="${!post.status}"><a class="btn btn-outline-success w-100"
+        <div class="col-4" th:if="${!post.status}"><a class="btn btn-outline-success w-50"
                               th:href="@{/posts/statusSold/{id}(id=${post.id})}">Продан</a>
         </div>
     </div>

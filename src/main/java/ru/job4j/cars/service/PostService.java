@@ -7,13 +7,14 @@ import ru.job4j.cars.model.Post;
 import ru.job4j.cars.model.User;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 public interface PostService {
 
     Optional<Post> save(PostCreating postCreating, User user, FileDto image);
 
-    void update(Post post, FileDto image);
+    void update(Post post, List<FileDto> images);
 
     Optional<Post> findById(int id);
 

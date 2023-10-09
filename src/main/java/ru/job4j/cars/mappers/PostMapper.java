@@ -53,17 +53,20 @@ public interface PostMapper {
         return post;
     }
 
-    default PostPreview getPostPreviewFromEntities(Post post) {
+    default PostPreview getPostPreviewFromPost(Post post) {
         PostPreview postPreview = new PostPreview();
         postPreview.setId(post.getId());
-        var priceHistoryList = post.getPriceHistories().stream().toList();
-        postPreview.setPrice(priceHistoryList.get(priceHistoryList.size() - 1).getAfter());
+        postPreview.setPrice(post.getPriceHistories().get(post.getPriceHistories().size() - 1).getAfter());
         postPreview.setCarName(post.getCar().getName());
         postPreview.setBodywork(post.getCar().getBodywork());
         postPreview.setEngineName(post.getCar().getEngine().getName());
         postPreview.setStatus(post.isStatus());
         postPreview.setUserLogin(post.getUser().getLogin());
-        postPreview.setFileId(post.getFiles().iterator().next().getId());
+        postPreview.setFileId(post.getFiles()
+                .stream()
+                .filter(file -> file.getName().startsWith("loki2"))
+                .findFirst()
+                .orElseGet(() -> post.getFiles().iterator().next()).getId());
         return postPreview;
     }
 }

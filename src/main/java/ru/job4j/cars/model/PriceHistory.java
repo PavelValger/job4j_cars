@@ -21,5 +21,6 @@ public class PriceHistory {
     private Integer id;
     private Integer before;
     private Integer after;
+    @Include
     private LocalDateTime created = LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS);
 }

@@ -72,11 +72,11 @@ class HibernatePostRepositoryTest {
         return user;
     }
 
-    private Set<PriceHistory> getPriceHistory() {
+    private List<PriceHistory> getPriceHistory() {
         PriceHistory priceHistory = new PriceHistory();
         priceHistory.setAfter(1000000);
         priceHistory.setBefore(900000);
-        return Set.of(priceHistory);
+        return List.of(priceHistory);
     }
 
     private Car getCar() {

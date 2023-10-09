@@ -16,6 +16,7 @@ public class Owner {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Include
     private int id;
+    @Include
     private String name;
 
     @OneToOne(cascade = CascadeType.ALL)

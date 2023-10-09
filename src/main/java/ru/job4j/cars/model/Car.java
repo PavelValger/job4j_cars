@@ -18,6 +18,7 @@ public class Car {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Include
     private int id;
+    @Include
     private String name;
     private String bodywork;
 

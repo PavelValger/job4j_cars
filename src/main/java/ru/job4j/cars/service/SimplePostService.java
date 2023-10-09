@@ -11,6 +11,7 @@ import ru.job4j.cars.model.User;
 import ru.job4j.cars.repository.PostRepository;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -40,9 +41,8 @@ public class SimplePostService implements PostService {
     }
 
     @Override
-    public void update(Post post, FileDto image) {
-        var file = fileService.getFileFromFileDto(image);
-        post.getFiles().add(file);
+    public void update(Post post, List<FileDto> images) {
+        post.getFiles().addAll(images.stream().map(fileService::getFileFromFileDto).toList());
         postRepository.update(post);
     }
 
@@ -54,7 +54,7 @@ public class SimplePostService implements PostService {
     @Override
     public Collection<PostPreview> findAll() {
         return postRepository.findAll().stream()
-                .map(postMapper::getPostPreviewFromEntities).collect(Collectors.toList());
+                .map(postMapper::getPostPreviewFromPost).collect(Collectors.toList());
     }
 
     @Override

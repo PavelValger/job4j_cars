@@ -12,6 +12,9 @@ import ru.job4j.cars.service.PostService;
 
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.NoSuchElementException;
 
 @Controller
 @AllArgsConstructor
@@ -35,10 +38,10 @@ public class PostController {
                          HttpSession session, @RequestParam MultipartFile file, Model model) {
         var user = (User) session.getAttribute("user");
         try {
-            postService.save(postCreating, user,
-                    new FileDto(file.getOriginalFilename(), file.getBytes()));
-            return "redirect:/posts";
-        } catch (IOException e) {
+            var optionalPost = postService.save(postCreating, user,
+                    new FileDto(String.format("loki2%s", file.getOriginalFilename()), file.getBytes()));
+            return String.format("redirect:/posts/edit/%s", optionalPost.get().getId());
+        } catch (NoSuchElementException | IOException e) {
             model.addAttribute("message", e.getMessage());
             return "errors/404";
         }
@@ -62,13 +65,17 @@ public class PostController {
             model.addAttribute("message", "Объявление не найдено");
             return "errors/404";
         }
-        try {
-            postService.update(postOptional.get(), new FileDto(files[0].getOriginalFilename(), files[0].getBytes()));
-            return "redirect:/posts";
-        } catch (IOException e) {
-            model.addAttribute("message", e.getMessage());
-            return "errors/404";
+        List<FileDto> images = new LinkedList<>();
+        for (MultipartFile file : files) {
+            try {
+                images.add(new FileDto(file.getOriginalFilename(), file.getBytes()));
+            } catch (IOException e) {
+                model.addAttribute("message", e.getMessage());
+                return "errors/404";
+            }
         }
+        postService.update(postOptional.get(), images);
+        return "redirect:/posts";
     }
 
     @GetMapping("/statusSold/{id}")
