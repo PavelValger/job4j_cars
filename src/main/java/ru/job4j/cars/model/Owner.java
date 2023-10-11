@@ -22,4 +22,9 @@ public class Owner {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "history_id")
     private History history;
+
+    @Override
+    public String toString() {
+        return String.format("%s, %s", name, history);
+    }
 }

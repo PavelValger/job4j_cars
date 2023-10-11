@@ -7,6 +7,7 @@ import lombok.EqualsAndHashCode.Include;
 import javax.persistence.*;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 
 @Data
@@ -14,6 +15,8 @@ import java.time.temporal.ChronoUnit;
 @Entity
 @Table(name = "price_history")
 public class PriceHistory {
+    private static final DateTimeFormatter FORMATTER =
+            DateTimeFormatter.ofPattern("dd-MMMM-yyyy HH:mm");
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,5 +25,11 @@ public class PriceHistory {
     private Integer before;
     private Integer after;
     @Include
-    private LocalDateTime created = LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS);
+    private LocalDateTime created = LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES);
+
+    @Override
+    public String toString() {
+        return String.format("было - %s, стало - %s, дата изменения: %s",
+                before, after, FORMATTER.format(created));
+    }
 }

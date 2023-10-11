@@ -11,7 +11,6 @@ import org.junit.jupiter.api.Test;
 import ru.job4j.cars.model.*;
 
 import java.util.List;
-import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -86,18 +85,18 @@ class HibernatePostRepositoryTest {
         return car;
     }
 
-    private Set<File> getFiles() {
+    private List<File> getFiles() {
         File file = new File();
         file.setName("test");
         file.setPath("test");
-        return Set.of(file);
+        return List.of(file);
     }
 
-    private Set<File> getFilesForUpdate() {
+    private List<File> getFilesForUpdate() {
         File file = new File();
         file.setName("testUp");
         file.setPath("testUp");
-        return Set.of(file);
+        return List.of(file);
     }
 
     private Post getPost() {

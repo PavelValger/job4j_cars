@@ -7,9 +7,7 @@ import org.springframework.stereotype.Repository;
 import ru.job4j.cars.model.Post;
 
 import java.time.LocalDateTime;
-import java.util.Collection;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Repository
 @AllArgsConstructor
@@ -33,20 +31,53 @@ public class HibernatePostRepository implements PostRepository {
         crudRepository.run(session -> session.merge(post));
     }
 
+    private Optional<Post> findPostPriceHistoriesById(int id) {
+        return crudRepository
+                .optional("FROM Post post LEFT JOIN FETCH post.priceHistories "
+                                + "WHERE post.id = :fId", Post.class,
+                        Map.of("fId", id)
+                );
+    }
+
+    private Optional<Post> findPostFilesById(int id) {
+        return crudRepository
+                .optional("FROM Post post LEFT JOIN FETCH post.files "
+                                + "WHERE post.id = :fId", Post.class,
+                        Map.of("fId", id)
+                );
+    }
+
     @Override
     public Optional<Post> findById(int id) {
-        return crudRepository.optional(
-                "FROM Post p JOIN FETCH p.priceHistories JOIN FETCH p.files WHERE p.id = :fId", Post.class,
-                Map.of("fId", id)
-        );
+        Optional<Post> postPriceHistories = findPostPriceHistoriesById(id);
+        Optional<Post> postFiles = findPostFilesById(id);
+        if (postPriceHistories.isPresent() && postFiles.isPresent()) {
+            postPriceHistories.get().setFiles(postFiles.get().getFiles());
+        }
+        return postPriceHistories;
+    }
+
+    private Collection<Post> findAllOnRequest(String query, Map<String, Object> objectMap) {
+        Map<String, Object> map = new HashMap<>();
+        List<Post> postsPriceHistories = crudRepository
+                .query("SELECT DISTINCT post FROM Post post LEFT JOIN FETCH post.priceHistories "
+                        + "order by post.created desc", Post.class);
+        query = String.format("SELECT DISTINCT post from Post post "
+                + "LEFT JOIN FETCH post.files WHERE post IN :fPosts %s order by post.created desc", query);
+        map.put("fPosts", postsPriceHistories);
+        map.putAll(objectMap);
+        Collection<Post> postsFiles = crudRepository.query(query, Post.class, map);
+        int index = 0;
+        for (Post post : postsFiles) {
+            post.setPriceHistories(postsPriceHistories.get(index).getPriceHistories());
+            index++;
+        }
+        return postsFiles;
     }
 
     @Override
     public Collection<Post> findAll() {
-        return crudRepository.query(
-                "SELECT DISTINCT p from Post p LEFT JOIN FETCH p.priceHistories "
-                        + "LEFT JOIN FETCH p.files order by p.created desc",
-                Post.class);
+        return findAllOnRequest("", Map.of());
     }
 
     /**
@@ -57,10 +88,7 @@ public class HibernatePostRepository implements PostRepository {
      */
     @Override
     public Collection<Post> showBrand(String brand) {
-        return crudRepository.query(
-                "FROM Post p JOIN FETCH p.priceHistories JOIN FETCH p.files "
-                        + "WHERE p.car.name = :fBrand", Post.class,
-                Map.of("fBrand", brand));
+        return findAllOnRequest("and post.car.name = :fBrand", Map.of("fBrand", brand));
     }
 
     @Override
@@ -80,10 +108,8 @@ public class HibernatePostRepository implements PostRepository {
      */
     public Collection<Post> showPostLastDay() {
         var localDateTime = LocalDateTime.now();
-        return crudRepository.query(
-                "FROM Post p JOIN FETCH p.priceHistories JOIN FETCH p.files "
-                        + "WHERE p.created > :fLocalDate", Post.class,
-                Map.of("fLocalDate", localDateTime.minusDays(1)));
+        return findAllOnRequest(
+                "and post.created > :fLocalDate", Map.of("fLocalDate", localDateTime.minusDays(1)));
     }
 
     /**
@@ -92,9 +118,7 @@ public class HibernatePostRepository implements PostRepository {
      * @return список объявлений с фото.
      */
     public Collection<Post> showPostWithPhoto() {
-        return crudRepository.query(
-                "FROM Post p JOIN FETCH p.priceHistories JOIN FETCH p.files "
-                        + "WHERE p.files.size != 0", Post.class);
+        return findAllOnRequest("and post.files.size != 0", Map.of());
     }
 
     public boolean deleteById(int id) {

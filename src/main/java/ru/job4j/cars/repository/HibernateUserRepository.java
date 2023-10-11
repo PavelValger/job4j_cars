@@ -58,7 +58,6 @@ public class HibernateUserRepository implements UserRepository {
     public Optional<User> findById(int userId) {
         return crudRepository.optional(
                 "from User u LEFT JOIN FETCH u.participates p LEFT JOIN FETCH u.owners "
-                        + "LEFT JOIN FETCH p.priceHistories LEFT JOIN FETCH p.files "
                         + "where u.id = :fId", User.class,
                 Map.of("fId", userId)
         );

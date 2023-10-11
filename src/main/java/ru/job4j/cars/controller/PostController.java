@@ -7,7 +7,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.job4j.cars.dto.FileDto;
 import ru.job4j.cars.dto.PostCreating;
+import ru.job4j.cars.model.Post;
 import ru.job4j.cars.model.User;
+import ru.job4j.cars.service.CarService;
 import ru.job4j.cars.service.PostService;
 
 import javax.servlet.http.HttpSession;
@@ -21,6 +23,7 @@ import java.util.NoSuchElementException;
 @RequestMapping("/posts")
 public class PostController {
     private final PostService postService;
+    private final CarService carService;
 
     @GetMapping
     public String getAll(Model model) {
@@ -39,7 +42,7 @@ public class PostController {
         var user = (User) session.getAttribute("user");
         try {
             var optionalPost = postService.save(postCreating, user,
-                    new FileDto(String.format("loki2%s", file.getOriginalFilename()), file.getBytes()));
+                    new FileDto(file.getOriginalFilename(), file.getBytes()));
             return String.format("redirect:/posts/edit/%s", optionalPost.get().getId());
         } catch (NoSuchElementException | IOException e) {
             model.addAttribute("message", e.getMessage());
@@ -86,5 +89,20 @@ public class PostController {
             return "errors/404";
         }
         return "redirect:/posts";
+    }
+
+    @GetMapping("/{id}")
+    public String getById(Model model, @PathVariable int id) {
+        var postOptional = postService.findById(id);
+        if (postOptional.isEmpty()) {
+            model.addAttribute("message", "Объявление не найдено");
+            return "errors/404";
+        }
+        Post post = postOptional.get();
+        model.addAttribute("post", post);
+        model.addAttribute("car", carService.findById(post.getCar().getId()).get());
+        model.addAttribute("price",
+                post.getPriceHistories().get(post.getPriceHistories().size() - 1).getAfter());
+        return "posts/one";
     }
 }

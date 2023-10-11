@@ -62,11 +62,7 @@ public interface PostMapper {
         postPreview.setEngineName(post.getCar().getEngine().getName());
         postPreview.setStatus(post.isStatus());
         postPreview.setUserLogin(post.getUser().getLogin());
-        postPreview.setFileId(post.getFiles()
-                .stream()
-                .filter(file -> file.getName().startsWith("loki2"))
-                .findFirst()
-                .orElseGet(() -> post.getFiles().iterator().next()).getId());
+        postPreview.setFileId(post.getFiles().get(0).getId());
         return postPreview;
     }
 }

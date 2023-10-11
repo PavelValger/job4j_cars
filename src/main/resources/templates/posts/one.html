@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+
+    <!--  Зависимости Bootstrap-->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/css/bootstrap-icons-1.10.5/bootstrap-icons.css}" rel="stylesheet">
+    <script th:src="@{/js/code.jquery.com_jquery-3.7.0.min.js}"></script>
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+
+    <title>Подробное описание объявления</title>
+</head>
+<body>
+<div class="container-fluid p-0">
+    <header th:insert="blocks/header :: header"></header>
+    <div class="container">
+        <table class="table table-borderless">
+            <tbody>
+            <tr>
+                <td style="width: 70px;">
+                    <h6>Марка </h6>
+                    <h6>Стоимость </h6>
+                    <h6>Статус </h6>
+                    <h6>Кузов </h6>
+                    <h6>Тип двигателя </h6>
+                </td>
+                <td style="width: 70px;">
+                    <h6><span th:text="${car.name}"></span></h6>
+                    <h6 style="color: GoldenRod;"><span th:text="${price}"></span></h6>
+                    <h6 style="color: red;"><span th:if="${post.status}">Продан</span></h6>
+                    <h6 style="color: green;"><span th:if="${!post.status}">В наличии</span></h6>
+                    <h6><span th:text="${car.bodywork}"></span></h6>
+                    <h6><span th:text="${car.engine.name}"></span></h6>
+                </td>
+                <td style="width: 600px;">
+                    <div class="col-auto">
+                        <div class="form-group" style="max-width: 700px;">
+                            <label for="priceHistory"><b>История изменения цен</b></label>
+                            <select class="custom-select" size="2" id="priceHistory" name="priceHistory">
+                                <option th:each="priceHistory : ${post.priceHistories}"
+                                        th:text="${priceHistory}"></option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-auto">
+                        <div class="form-group" style="max-width: 700px;">
+                            <label for="owners"><b>История смены владельцев</b></label>
+                            <select class="custom-select" size="2" id="owners" name="owners">
+                                <option th:each="owner : ${car.owners}"
+                                        th:text="${owner}"></option>
+                            </select>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <figure class="figure" th:each="file : ${post.files}">
+            <img th:src="@{/files/{fileId}(fileId=${file.getId})}"
+                 alt="" width="350px" height="auto">
+        </figure>
+        <h6>Время и дата подачи объявления: <span th:text="${#temporals.format(post.created, 'HH:mm dd-MM-yyyy')}"></span></h6>
+        <h6>Владелец: <span th:text="${car.owner.name}"></span></h6>
+        <h6>Дата начала владения: <span th:text="${#temporals.format(car.owner.history.startAt, 'dd-MM-yyyy')}"></span></h6>
+        <h6>Комментарий продавца: <span th:text="${post.description}"></span></h6>
+    </div>
+    <footer th:insert="blocks/footer :: footer"></footer>
+</div>
+</body>
+</html>

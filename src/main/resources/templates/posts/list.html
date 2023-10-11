@@ -40,15 +40,19 @@
                 <td style="width: 100px;">
                     <img th:src="@{/files/{fileId}(fileId=${post.fileId})}" width="250" alt="No image"/>
                 </td>
-                <td style="width: 150px; text-align: center;">
-                    <h6><span th:if="${post.status}">Продан</span></h6>
-                    <h6><span th:if="${!post.status}">В наличии</span></h6>
+                <td style="width: 150px;">
+                    <h3><a style="color: GoldenRod; text-decoration: none;" th:text="${post.carName}"
+                           th:href="@{/posts/{id}(id=${post.id})}"></a>
+                    </h3>
+                    <h6 style="color: red;"><span th:if="${post.status}">Продан</span></h6>
+                    <h6 style="color: green;"><span th:if="${!post.status}">В наличии</span></h6>
+                    <br>
+                    <h7><span th:text="${post.bodywork}"></span></h7>
+                    <br>
+                    <h7><span th:text="${post.engineName}"></span></h7>
                 </td>
                 <td>
-                    <h3><span th:text="${post.price}"></span></h3>
-                    <h7><span th:text="${post.carName}"></span></h7>
-                    <h7><span th:text="${post.bodywork}"></span></h7>
-                    <h7><span th:text="${post.engineName}"></span></h7>
+                    <h3><span th:text="${post.price}"></span> ₽</h3>
                 </td>
                 <td>
                     <h8><span th:if="${post.userLogin == user.login}">

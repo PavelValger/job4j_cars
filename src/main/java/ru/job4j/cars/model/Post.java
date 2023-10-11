@@ -39,5 +39,5 @@ public class Post {
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "auto_post_id")
-    private Set<File> files = new LinkedHashSet<>();
+    private List<File> files = new ArrayList<>();
 }

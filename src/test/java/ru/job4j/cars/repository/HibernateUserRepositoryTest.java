@@ -79,10 +79,10 @@ class HibernateUserRepositoryTest {
         PriceHistory priceHistory = new PriceHistory();
         priceHistory.setAfter(1000000);
         priceHistory.setBefore(900000);
-        post.setFiles(Set.of(file));
+        post.setFiles(List.of(file));
         post.setPriceHistories(List.of(priceHistory));
         postRepository.save(post);
-        return post;
+        return postRepository.findById(post.getId()).get();
     }
 
     private Owner getOwner() {
