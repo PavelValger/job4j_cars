@@ -105,4 +105,22 @@ public class PostController {
                 post.getPriceHistories().get(post.getPriceHistories().size() - 1).getAfter());
         return "posts/one";
     }
+
+    @PostMapping("/brandSearch")
+    public String brandSearch(Model model, @RequestParam String brand) {
+        model.addAttribute("posts", postService.showBrand(brand));
+        return "posts/list";
+    }
+
+    @PostMapping("/bodyworkSearch")
+    public String bodyworkSearch(Model model, @RequestParam String bodywork) {
+        model.addAttribute("posts", postService.showBodywork(bodywork));
+        return "posts/list";
+    }
+
+    @PostMapping("/engineSearch")
+    public String engineSearch(Model model, @RequestParam String engine) {
+        model.addAttribute("posts", postService.showEngine(engine));
+        return "posts/list";
+    }
 }

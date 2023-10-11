@@ -20,7 +20,11 @@ public interface PostService {
 
     Collection<PostPreview> findAll();
 
-    Collection<Post> showBrand(String brand);
-
     boolean updateStatus(int id);
+
+    Collection<PostPreview> showBrand(String brand);
+
+    Collection<PostPreview> showBodywork(String bodywork);
+
+    Collection<PostPreview> showEngine(String engine);
 }

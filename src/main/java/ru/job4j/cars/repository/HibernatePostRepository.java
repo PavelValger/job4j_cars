@@ -80,6 +80,16 @@ public class HibernatePostRepository implements PostRepository {
         return findAllOnRequest("", Map.of());
     }
 
+    @Override
+    public boolean updateStatus(int id) {
+        return crudRepository.numberRowsRequest(
+                "UPDATE Post SET "
+                        + "status = true "
+                        + "WHERE id = :fId",
+                Map.of("fId", id)
+        ) > 0;
+    }
+
     /**
      * Показать объявления определенной марки
      *
@@ -92,13 +102,13 @@ public class HibernatePostRepository implements PostRepository {
     }
 
     @Override
-    public boolean updateStatus(int id) {
-        return crudRepository.numberRowsRequest(
-                "UPDATE Post SET "
-                        + "status = true "
-                        + "WHERE id = :fId",
-                Map.of("fId", id)
-        ) > 0;
+    public Collection<Post> showBodywork(String bodywork) {
+        return findAllOnRequest("and post.car.bodywork = :fBodywork", Map.of("fBodywork", bodywork));
+    }
+
+    @Override
+    public Collection<Post> showEngine(String engine) {
+        return findAllOnRequest("and post.car.engine.name = :fEngine", Map.of("fEngine", engine));
     }
 
     /**

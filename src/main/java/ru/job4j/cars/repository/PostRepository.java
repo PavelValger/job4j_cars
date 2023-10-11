@@ -15,7 +15,11 @@ public interface PostRepository {
 
     Collection<Post> findAll();
 
+    boolean updateStatus(int id);
+
     Collection<Post> showBrand(String brand);
 
-    boolean updateStatus(int id);
+    Collection<Post> showBodywork(String bodywork);
+
+    Collection<Post> showEngine(String engine);
 }

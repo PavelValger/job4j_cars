@@ -51,19 +51,33 @@ public class SimplePostService implements PostService {
         return postRepository.findById(id);
     }
 
-    @Override
-    public Collection<PostPreview> findAll() {
-        return postRepository.findAll().stream()
+    private Collection<PostPreview> getPostsPreview(Collection<Post> collection) {
+        return collection.stream()
                 .map(postMapper::getPostPreviewFromPost).collect(Collectors.toList());
     }
 
     @Override
-    public Collection<Post> showBrand(String brand) {
-        return postRepository.showBrand(brand);
+    public Collection<PostPreview> findAll() {
+        return getPostsPreview(postRepository.findAll());
     }
 
     @Override
     public boolean updateStatus(int id) {
         return postRepository.updateStatus(id);
+    }
+
+    @Override
+    public Collection<PostPreview> showBrand(String brand) {
+        return getPostsPreview(postRepository.showBrand(brand));
+    }
+
+    @Override
+    public Collection<PostPreview> showBodywork(String bodywork) {
+        return getPostsPreview(postRepository.showBodywork(bodywork));
+    }
+
+    @Override
+    public Collection<PostPreview> showEngine(String engine) {
+        return getPostsPreview(postRepository.showEngine(engine));
     }
 }

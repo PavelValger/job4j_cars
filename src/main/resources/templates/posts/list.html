@@ -16,24 +16,51 @@
 <div class="container-fluid p-0">
     <header th:insert="blocks/header :: header"></header>
     <div class="container">
-        <nav class="nav nav-pills nav-justified">
-            <a class="nav-link" th:href="@{/posts}">Все объявления</a>
-            <a class="nav-link" th:href="@{/posts/completed}">Фильтр1</a>
-            <a class="nav-link" th:href="@{/posts/fresh}">Фильтр2</a>
-        </nav>
-        <div class="mb-3 row">
-            <div class="col-6"></div>
-            <div class="col-6">
-                <div class="row">
-                    <div class="col-4" th:if="${user.login != 'Гость'}">
-                        <a class="btn btn-secondary w-130" th:href="@{/posts/create}">Добавить объявление</a>
+        <table class="table table-borderless">
+            <tbody>
+            <tr>
+                <td style="width: 200px;">
+                    <form class="form-inline my-2 my-lg-0" th:action="@{/posts/brandSearch}" method="post">
+                        <input class="form-control mr-sm-2" type="search" placeholder="Поиск по марке" name="brand"
+                               aria-label="Search">
+                        <button class="btn btn-warning my-2 my-sm-0" type="submit">Поиск</button>
+                    </form>
+                </td>
+                <td style="width: 200px;">
+                    <form class="form-inline my-2 my-lg-0" th:action="@{/posts/bodyworkSearch}" method="post">
+                        <input class="form-control mr-sm-2" type="search" placeholder="Поиск по кузову" name="bodywork"
+                               aria-label="Search">
+                        <button class="btn btn-info my-2 my-sm-0" type="submit">Поиск</button>
+                    </form>
+                </td>
+                <td style="width: 200px;">
+                    <form class="form-inline my-2 my-lg-0" th:action="@{/posts/engineSearch}" method="post">
+                        <input class="form-control mr-sm-2" type="search" placeholder="Поиск по двигателю" name="engine"
+                               aria-label="Search">
+                        <button class="btn btn-info my-2 my-sm-0" type="submit">Поиск</button>
+                    </form>
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 200px;">
+                    <div class="col-4">
+                        <a class="btn btn-info w-130" th:href="@{/posts}">Все объявления</a>
                     </div>
-                </div>
-                <div class="row" th:if="${user.login == 'Гость'}">
-                    <h8>Войдите, чтобы добавить объявление</h8>
-                </div>
-            </div>
-        </div>
+                </td>
+                <td style="width: 200px;">
+                </td>
+                <td style="width: 200px;">
+                    <div class="col-4" th:if="${user.login != 'Гость'}">
+                        <a class="btn btn-secondary w-130" th:href="@{/posts/create}">Добавить
+                            объявление</a>
+                    </div>
+                    <div class="row" th:if="${user.login == 'Гость'}">
+                        <h8>Войдите, чтобы добавить объявление</h8>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
         <table class="table table-hover">
             <tbody>
             <tr th:each="post: ${posts}">
@@ -46,7 +73,6 @@
                     </h3>
                     <h6 style="color: red;"><span th:if="${post.status}">Продан</span></h6>
                     <h6 style="color: green;"><span th:if="${!post.status}">В наличии</span></h6>
-                    <br>
                     <h7><span th:text="${post.bodywork}"></span></h7>
                     <br>
                     <h7><span th:text="${post.engineName}"></span></h7>
