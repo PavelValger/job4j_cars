@@ -22,7 +22,7 @@ public class Post {
     private Integer id;
     private String description;
     @Include
-    private LocalDateTime created = LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS);
+    private LocalDateTime created = LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES);
     private boolean status;
 
     @ManyToOne

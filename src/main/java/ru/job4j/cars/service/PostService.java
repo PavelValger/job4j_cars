@@ -4,7 +4,6 @@ import ru.job4j.cars.dto.FileDto;
 import ru.job4j.cars.dto.OwnerCreating;
 import ru.job4j.cars.dto.PostCreating;
 import ru.job4j.cars.dto.PostPreview;
-import ru.job4j.cars.model.Car;
 import ru.job4j.cars.model.Post;
 import ru.job4j.cars.model.User;
 
@@ -33,4 +32,8 @@ public interface PostService {
     Collection<PostPreview> showBodywork(String bodywork);
 
     Collection<PostPreview> showEngine(String engine);
+
+    Collection<PostPreview> showUserPost(Integer userId);
+
+    Collection<PostPreview> showSubscribe(Collection<Post> subscribe);
 }

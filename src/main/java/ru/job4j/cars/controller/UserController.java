@@ -3,21 +3,21 @@ package ru.job4j.cars.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import ru.job4j.cars.model.User;
+import ru.job4j.cars.service.PostService;
 import ru.job4j.cars.service.UserService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 @RequiredArgsConstructor
 @Controller
 @RequestMapping("/users")
 public class UserController {
     private final UserService userService;
+    private final PostService postService;
 
     @GetMapping("/register")
     public String getRegistationPage() {
@@ -55,5 +55,31 @@ public class UserController {
     public String logout(HttpSession session) {
         session.invalidate();
         return "redirect:/users/login";
+    }
+
+    @GetMapping("/subscribe/{id}")
+    public String subscribe(Model model, @PathVariable int id, HttpSession session) {
+        var user = (User) session.getAttribute("user");
+        var postOptional = postService.findById(id);
+        if (postOptional.isEmpty()) {
+            model.addAttribute("message", "Объявление не найдено");
+            return "errors/404";
+        }
+        var post = postOptional.get();
+        user = userService.findById(user.getId()).get();
+        boolean added = user.getParticipates().add(post);
+        if (!added) {
+            model.addAttribute("message",
+                    String.format("Вы уже подписаны на объявление %s владельца %s",
+                            post.getCar().getName(),
+                            post.getCar().getOwner().getName()));
+            return "errors/409";
+        }
+        userService.update(user);
+        model.addAttribute("message",
+                String.format("Вы успешно подписались на объявление %s владельца %s",
+                        post.getCar().getName(),
+                        post.getCar().getOwner().getName()));
+        return "request/200";
     }
 }

@@ -111,6 +111,16 @@ public class HibernatePostRepository implements PostRepository {
         return findAllOnRequest("and post.car.engine.name = :fEngine", Map.of("fEngine", engine));
     }
 
+    @Override
+    public Collection<Post> showUserPost(Integer userId) {
+        return findAllOnRequest("and post.user.id = :fUserId", Map.of("fUserId", userId));
+    }
+
+    @Override
+    public Collection<Post> showSubscribe(Collection<Post> subscribe) {
+        return findAllOnRequest("and post IN :fSubscribe", Map.of("fSubscribe", subscribe));
+    }
+
     /**
      * Показать объявления за последний день
      *

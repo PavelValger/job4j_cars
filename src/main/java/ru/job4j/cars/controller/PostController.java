@@ -12,6 +12,7 @@ import ru.job4j.cars.model.Post;
 import ru.job4j.cars.model.User;
 import ru.job4j.cars.service.CarService;
 import ru.job4j.cars.service.PostService;
+import ru.job4j.cars.service.UserService;
 
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
@@ -25,6 +26,7 @@ import java.util.NoSuchElementException;
 public class PostController {
     private final PostService postService;
     private final CarService carService;
+    private final UserService userService;
 
     @GetMapping
     public String getAll(Model model) {
@@ -63,8 +65,7 @@ public class PostController {
     }
 
     @PostMapping("/edit/{id}")
-    public String update(Model model, @PathVariable int id, @RequestParam MultipartFile[] files,
-                         @RequestParam Integer newPrice) {
+    public String update(Model model, @PathVariable int id, @RequestParam MultipartFile[] files) {
         var postOptional = postService.findById(id);
         if (postOptional.isEmpty()) {
             model.addAttribute("message", "Объявление не найдено");
@@ -145,6 +146,21 @@ public class PostController {
     @PostMapping("/engineSearch")
     public String engineSearch(Model model, @RequestParam String engine) {
         model.addAttribute("posts", postService.showEngine(engine));
+        return "posts/list";
+    }
+
+    @GetMapping("/postUserSearch")
+    public String postUserSearch(Model model, HttpSession session) {
+        var user = (User) session.getAttribute("user");
+        model.addAttribute("posts", postService.showUserPost(user.getId()));
+        return "posts/list";
+    }
+
+    @GetMapping("/subscribe")
+    public String subscribe(Model model, HttpSession session) {
+        var user = (User) session.getAttribute("user");
+        user = userService.findById(user.getId()).get();
+        model.addAttribute("posts", postService.showSubscribe(user.getParticipates()));
         return "posts/list";
     }
 }

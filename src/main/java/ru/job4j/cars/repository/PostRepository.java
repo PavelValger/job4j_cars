@@ -22,4 +22,8 @@ public interface PostRepository {
     Collection<Post> showBodywork(String bodywork);
 
     Collection<Post> showEngine(String engine);
+
+    Collection<Post> showUserPost(Integer userId);
+
+    Collection<Post> showSubscribe(Collection<Post> subscribe);
 }

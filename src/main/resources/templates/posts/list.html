@@ -41,18 +41,29 @@
                     </form>
                 </td>
             </tr>
+            </tbody>
+        </table>
+        <table class="table table-borderless">
+            <tbody>
             <tr>
-                <td style="width: 200px;">
+                <td style="width: 150px;">
                     <div class="col-4">
                         <a class="btn btn-info w-130" th:href="@{/posts}">Все объявления</a>
                     </div>
                 </td>
-                <td style="width: 200px;">
-                </td>
-                <td style="width: 200px;">
+                <td style="width: 150px;">
                     <div class="col-4" th:if="${user.login != 'Гость'}">
-                        <a class="btn btn-secondary w-130" th:href="@{/posts/create}">Добавить
-                            объявление</a>
+                        <a class="btn btn-info w-130" th:href="@{/posts/postUserSearch}">Мои объявления</a>
+                    </div>
+                </td>
+                <td style="width: 150px;">
+                    <div class="col-4" th:if="${user.login != 'Гость'}">
+                        <a class="btn btn-info w-130" th:href="@{/posts/subscribe}">Мои подписки</a>
+                    </div>
+                </td>
+                <td style="width: 150px;">
+                    <div class="col-4" th:if="${user.login != 'Гость'}">
+                        <a class="btn btn-secondary w-130" th:href="@{/posts/create}">Добавить объявление</a>
                     </div>
                     <div class="row" th:if="${user.login == 'Гость'}">
                         <h8>Войдите, чтобы добавить объявление</h8>
@@ -83,6 +94,10 @@
                 <td>
                     <h8><span th:if="${post.userLogin == user.login}">
                     <a th:text="Редактировать" th:href="@{/posts/edit/{id}(id=${post.id})}"></a></span></h8>
+                </td>
+                <td>
+                    <h8><span th:if="${user.login !='Гость' && post.userLogin != user.login}">
+                    <a th:text="Подписаться" th:href="@{/users/subscribe/{id}(id=${post.id})}"></a></span></h8>
                 </td>
             </tr>
             </tbody>

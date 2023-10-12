@@ -8,7 +8,6 @@ import ru.job4j.cars.dto.PostCreating;
 import ru.job4j.cars.dto.PostPreview;
 import ru.job4j.cars.mappers.OwnerMapper;
 import ru.job4j.cars.mappers.PostMapper;
-import ru.job4j.cars.model.Car;
 import ru.job4j.cars.model.Post;
 import ru.job4j.cars.model.PriceHistory;
 import ru.job4j.cars.model.User;
@@ -105,5 +104,15 @@ public class SimplePostService implements PostService {
     @Override
     public Collection<PostPreview> showEngine(String engine) {
         return getPostsPreview(postRepository.showEngine(engine));
+    }
+
+    @Override
+    public Collection<PostPreview> showUserPost(Integer userId) {
+        return getPostsPreview(postRepository.showUserPost(userId));
+    }
+
+    @Override
+    public Collection<PostPreview> showSubscribe(Collection<Post> subscribe) {
+        return getPostsPreview(postRepository.showSubscribe(subscribe));
     }
 }
