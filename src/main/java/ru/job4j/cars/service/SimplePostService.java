@@ -3,10 +3,14 @@ package ru.job4j.cars.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.job4j.cars.dto.FileDto;
+import ru.job4j.cars.dto.OwnerCreating;
 import ru.job4j.cars.dto.PostCreating;
 import ru.job4j.cars.dto.PostPreview;
+import ru.job4j.cars.mappers.OwnerMapper;
 import ru.job4j.cars.mappers.PostMapper;
+import ru.job4j.cars.model.Car;
 import ru.job4j.cars.model.Post;
+import ru.job4j.cars.model.PriceHistory;
 import ru.job4j.cars.model.User;
 import ru.job4j.cars.repository.PostRepository;
 
@@ -20,8 +24,10 @@ import java.util.stream.Collectors;
 public class SimplePostService implements PostService {
     private final PostRepository postRepository;
     private final PostMapper postMapper;
+    private final OwnerMapper ownerMapper;
     private final FileService fileService;
     private final UserService userService;
+    private final CarService carService;
 
     @Override
     public Optional<Post> save(PostCreating postCreating, User user, FileDto image) {
@@ -44,6 +50,26 @@ public class SimplePostService implements PostService {
     public void update(Post post, List<FileDto> images) {
         post.getFiles().addAll(images.stream().map(fileService::getFileFromFileDto).toList());
         postRepository.update(post);
+    }
+
+    @Override
+    public void updatePrice(Post post, Integer newPrice) {
+        var histories = post.getPriceHistories();
+        PriceHistory priceHistory = new PriceHistory();
+        priceHistory.setBefore(histories.get(histories.size() - 1).getAfter());
+        priceHistory.setAfter(newPrice);
+        histories.add(priceHistory);
+        postRepository.update(post);
+    }
+
+    @Override
+    public void updateOwner(Post post, OwnerCreating ownerCreating) {
+        var optionalCar = carService.findById(post.getCar().getId());
+        if (optionalCar.isPresent()) {
+            var car = optionalCar.get();
+            car.getOwners().add(ownerMapper.getOwnerFromOwnerCreating(ownerCreating));
+            carService.update(car);
+        }
     }
 
     @Override

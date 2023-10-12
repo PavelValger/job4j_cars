@@ -1,8 +1,10 @@
 package ru.job4j.cars.service;
 
 import ru.job4j.cars.dto.FileDto;
+import ru.job4j.cars.dto.OwnerCreating;
 import ru.job4j.cars.dto.PostCreating;
 import ru.job4j.cars.dto.PostPreview;
+import ru.job4j.cars.model.Car;
 import ru.job4j.cars.model.Post;
 import ru.job4j.cars.model.User;
 
@@ -21,6 +23,10 @@ public interface PostService {
     Collection<PostPreview> findAll();
 
     boolean updateStatus(int id);
+
+    void updatePrice(Post post, Integer newPrice);
+
+    void updateOwner(Post post, OwnerCreating ownerCreating);
 
     Collection<PostPreview> showBrand(String brand);
 

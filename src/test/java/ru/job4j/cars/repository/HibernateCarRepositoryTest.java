@@ -54,10 +54,10 @@ class HibernateCarRepositoryTest {
         return owner;
     }
 
-    private Set<Owner> getOwners() {
+    private List<Owner> getOwners() {
         Owner owner = new Owner();
         owner.setName("former owner");
-        return Set.of(owner);
+        return List.of(owner);
     }
 
     private Engine getEngine() {

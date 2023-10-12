@@ -6,6 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.job4j.cars.dto.FileDto;
+import ru.job4j.cars.dto.OwnerCreating;
 import ru.job4j.cars.dto.PostCreating;
 import ru.job4j.cars.model.Post;
 import ru.job4j.cars.model.User;
@@ -62,7 +63,8 @@ public class PostController {
     }
 
     @PostMapping("/edit/{id}")
-    public String update(Model model, @PathVariable int id, @RequestParam MultipartFile[] files) {
+    public String update(Model model, @PathVariable int id, @RequestParam MultipartFile[] files,
+                         @RequestParam Integer newPrice) {
         var postOptional = postService.findById(id);
         if (postOptional.isEmpty()) {
             model.addAttribute("message", "Объявление не найдено");
@@ -78,7 +80,29 @@ public class PostController {
             }
         }
         postService.update(postOptional.get(), images);
-        return "redirect:/posts";
+        return String.format("redirect:/posts/edit/%s", postOptional.get().getId());
+    }
+
+    @PostMapping("/editPrice/{id}")
+    public String updatePrice(Model model, @PathVariable int id, @RequestParam Integer newPrice) {
+        var postOptional = postService.findById(id);
+        if (postOptional.isEmpty()) {
+            model.addAttribute("message", "Объявление не найдено");
+            return "errors/404";
+        }
+        postService.updatePrice(postOptional.get(), newPrice);
+        return String.format("redirect:/posts/edit/%s", postOptional.get().getId());
+    }
+
+    @PostMapping("/editOwner/{id}")
+    public String updateOwner(Model model, @PathVariable int id, @ModelAttribute OwnerCreating ownerCreating) {
+        var postOptional = postService.findById(id);
+        if (postOptional.isEmpty()) {
+            model.addAttribute("message", "Объявление не найдено");
+            return "errors/404";
+        }
+        postService.updateOwner(postOptional.get(), ownerCreating);
+        return String.format("redirect:/posts/edit/%s", postOptional.get().getId());
     }
 
     @GetMapping("/statusSold/{id}")
