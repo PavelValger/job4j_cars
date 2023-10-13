@@ -106,6 +106,10 @@ public class SimplePostService implements PostService {
         return getPostsPreview(postRepository.showEngine(engine));
     }
 
+    /**
+     * @param userId id пользователя
+     * @return посты в виде DTO PostsPreview, поданные пользователем.
+     */
     @Override
     public Collection<PostPreview> showUserPost(Integer userId) {
         return getPostsPreview(postRepository.showUserPost(userId));

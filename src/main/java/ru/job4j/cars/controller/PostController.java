@@ -28,17 +28,26 @@ public class PostController {
     private final CarService carService;
     private final UserService userService;
 
+    /**
+     * Вывсети все объявления
+     */
     @GetMapping
     public String getAll(Model model) {
         model.addAttribute("posts", postService.findAll());
         return "posts/list";
     }
 
+    /**
+     * Страница подачи объявления
+     */
     @GetMapping("/create")
     public String getCreationPage() {
         return "posts/create";
     }
 
+    /**
+     * Отправка формы создания объявления
+     */
     @PostMapping("/create")
     public String create(@ModelAttribute PostCreating postCreating,
                          HttpSession session, @RequestParam MultipartFile file, Model model) {
@@ -53,6 +62,9 @@ public class PostController {
         }
     }
 
+    /**
+     * Страница редактирования объявления
+     */
     @GetMapping("/edit/{id}")
     public String getEditPage(Model model, @PathVariable int id) {
         var postOptional = postService.findById(id);
@@ -64,6 +76,9 @@ public class PostController {
         return "posts/edit";
     }
 
+    /**
+     * Обработка формы редактирования объявления
+     */
     @PostMapping("/edit/{id}")
     public String update(Model model, @PathVariable int id, @RequestParam MultipartFile[] files) {
         var postOptional = postService.findById(id);
@@ -84,6 +99,9 @@ public class PostController {
         return String.format("redirect:/posts/edit/%s", postOptional.get().getId());
     }
 
+    /**
+     * Изменить стоимость
+     */
     @PostMapping("/editPrice/{id}")
     public String updatePrice(Model model, @PathVariable int id, @RequestParam Integer newPrice) {
         var postOptional = postService.findById(id);
@@ -95,6 +113,9 @@ public class PostController {
         return String.format("redirect:/posts/edit/%s", postOptional.get().getId());
     }
 
+    /**
+     * Добавить владельца авто
+     */
     @PostMapping("/editOwner/{id}")
     public String updateOwner(Model model, @PathVariable int id, @ModelAttribute OwnerCreating ownerCreating) {
         var postOptional = postService.findById(id);
@@ -106,6 +127,9 @@ public class PostController {
         return String.format("redirect:/posts/edit/%s", postOptional.get().getId());
     }
 
+    /**
+     * Сменить статус поста на продан
+     */
     @GetMapping("/statusSold/{id}")
     public String updateStatus(Model model, @PathVariable int id) {
         var isUpdated = postService.updateStatus(id);
@@ -116,6 +140,10 @@ public class PostController {
         return "redirect:/posts";
     }
 
+    /**
+     *
+     * @return страницу подробного просмотра объявления
+     */
     @GetMapping("/{id}")
     public String getById(Model model, @PathVariable int id) {
         var postOptional = postService.findById(id);
@@ -131,24 +159,40 @@ public class PostController {
         return "posts/one";
     }
 
+    /**
+     *
+     * @return посты по марке авто
+     */
     @PostMapping("/brandSearch")
     public String brandSearch(Model model, @RequestParam String brand) {
         model.addAttribute("posts", postService.showBrand(brand));
         return "posts/list";
     }
 
+    /**
+     *
+     * @return посты по кузову авто
+     */
     @PostMapping("/bodyworkSearch")
     public String bodyworkSearch(Model model, @RequestParam String bodywork) {
         model.addAttribute("posts", postService.showBodywork(bodywork));
         return "posts/list";
     }
 
+    /**
+     *
+     * @return посты по двигателю авто
+     */
     @PostMapping("/engineSearch")
     public String engineSearch(Model model, @RequestParam String engine) {
         model.addAttribute("posts", postService.showEngine(engine));
         return "posts/list";
     }
 
+    /**
+     *
+     * @return посты пользователя
+     */
     @GetMapping("/postUserSearch")
     public String postUserSearch(Model model, HttpSession session) {
         var user = (User) session.getAttribute("user");
@@ -156,6 +200,10 @@ public class PostController {
         return "posts/list";
     }
 
+    /**
+     *
+     * @return подписки пользователя
+     */
     @GetMapping("/subscribe")
     public String subscribe(Model model, HttpSession session) {
         var user = (User) session.getAttribute("user");
