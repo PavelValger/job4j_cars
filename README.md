@@ -3,8 +3,16 @@
 В проекте "job4j_cars" разрабатывается сайт по продаже машин.
 
 Функционал проекта позволяет:
-* в объявлении просматривать описание, марку машины, тип кузова, фото;
-* объявление имеет статус продан автомобиль или нет.
+* Просматривать все объявления;
+* подавать объявления, загружать фотографии;
+* просматривать подробное описание объявления;
+* менять статус объявления (в наличии/продан);
+* изменять стоимость;
+* добавлять бывших владельцев;
+* подписываться на объявления;
+* использовать фильтры поиска;
+* регистрировать пользователя;
+* авторизация пользователя.
 
 ### Стек технологий :technologist:.
 Основные :man_technologist:: 
@@ -27,6 +35,51 @@
 - Java 17
 - Maven 3.8
 - PostgreSQL 15.
+
+### Запуск проекта :running:.
+```Скачать проект job4j_cars в IntelliJ Idea```
+
+```Создать БД "cars" (с помощью pgAdmin4)```
+
+```Cоздайте и заполните таблицы БД  "cars". Откройте закладку Maven -> plugins -> liquibase. Найдите задачу liquibase:update и выполните ее.```
+
+```Запустите приложение в классе Main (ru/job4j/cars/Main.java)```
+
+```Откройте страницу http://localhost:8080/ в браузере```
+
+### Screenshots работы с приложением по продаже автомобилей :Cars sale:.
+
+- [x] Страница со всеми объявлениями
+
+  ![](https://github.com/PavelValger/job4j_cars/blob/master/img/1.jpg?raw=true)
+
+- [x] Добавить объявление
+
+  ![](https://github.com/PavelValger/job4j_cars/blob/master/img/1.1.jpg?raw=true)
+
+- [x] Страница со всеми объявлениями авторизованного пользователя
+
+  ![](https://github.com/PavelValger/job4j_cars/blob/master/img/2.jpg?raw=true)
+
+- [x] Выводит список поданных объявлений пользователя
+
+  ![](https://github.com/PavelValger/job4j_cars/blob/master/img/3.jpg?raw=true)
+
+- [x] Успешная подписка на объявление
+
+  ![](https://github.com/PavelValger/job4j_cars/blob/master/img/4.jpg?raw=true)
+
+- [x] Подписки пользователя
+
+  ![](https://github.com/PavelValger/job4j_cars/blob/master/img/5.jpg?raw=true)
+
+- [x] Страница подробного описания объявления
+
+  ![](https://github.com/PavelValger/job4j_cars/blob/master/img/6.jpg?raw=true)
+
+- [x] Страница редактирования объявления
+
+  ![](https://github.com/PavelValger/job4j_cars/blob/master/img/7.jpg?raw=true)
 
 #### Контакты для связи :iphone::
 * Вальгер Павел Иванович;
