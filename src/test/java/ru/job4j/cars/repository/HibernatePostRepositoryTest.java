@@ -123,7 +123,7 @@ class HibernatePostRepositoryTest {
     @Test
     void whenSavePostThenPost() {
         Post post = getPost();
-        assertThat(hibernatePostRepository.save(post).get()).isEqualTo(post);
+        assertThat(hibernatePostRepository.save(post)).isEqualTo(post);
     }
 
     @Test
@@ -177,7 +177,7 @@ class HibernatePostRepositoryTest {
     void whenShowPostWithPhotoThenPost() {
         Post post = getPost();
         var optionalPost = hibernatePostRepository.save(post);
-        assertThat(hibernatePostRepository.showPostWithPhoto()).isEqualTo(List.of(optionalPost.get()));
+        assertThat(hibernatePostRepository.showPostWithPhoto()).isEqualTo(List.of(optionalPost));
     }
 
     @Test

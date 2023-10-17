@@ -92,7 +92,7 @@ public class PostController {
                 images.add(new FileDto(file.getOriginalFilename(), file.getBytes()));
             } catch (IOException e) {
                 model.addAttribute("message", e.getMessage());
-                return "errors/404";
+                return "errors/500";
             }
         }
         postService.update(postOptional.get(), images);

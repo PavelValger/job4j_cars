@@ -7,7 +7,7 @@ import java.util.Optional;
 
 public interface PostRepository {
 
-    Optional<Post> save(Post post);
+    Post save(Post post);
 
     void update(Post post);
 

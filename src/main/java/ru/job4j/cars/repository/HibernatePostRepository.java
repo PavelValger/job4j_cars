@@ -1,8 +1,6 @@
 package ru.job4j.cars.repository;
 
 import lombok.AllArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 import ru.job4j.cars.model.Post;
 
@@ -12,18 +10,12 @@ import java.util.*;
 @Repository
 @AllArgsConstructor
 public class HibernatePostRepository implements PostRepository {
-    private static final Logger LOG = LoggerFactory.getLogger(HibernateCarRepository.class.getName());
     private final CrudRepository crudRepository;
 
     @Override
-    public Optional<Post> save(Post post) {
-        try {
-            crudRepository.run(session -> session.persist(post));
-            return Optional.of(post);
-        } catch (Exception e) {
-            LOG.info("Неудачная попытка сохранения объявления, Exception in log example", e);
-        }
-        return Optional.empty();
+    public Post save(Post post) {
+        crudRepository.run(session -> session.persist(post));
+        return post;
     }
 
     @Override

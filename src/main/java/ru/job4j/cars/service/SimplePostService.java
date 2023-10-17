@@ -1,6 +1,8 @@
 package ru.job4j.cars.service;
 
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import ru.job4j.cars.dto.FileDto;
 import ru.job4j.cars.dto.OwnerCreating;
@@ -11,6 +13,7 @@ import ru.job4j.cars.mappers.PostMapper;
 import ru.job4j.cars.model.Post;
 import ru.job4j.cars.model.PriceHistory;
 import ru.job4j.cars.model.User;
+import ru.job4j.cars.repository.HibernateCarRepository;
 import ru.job4j.cars.repository.PostRepository;
 
 import java.util.Collection;
@@ -21,6 +24,7 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class SimplePostService implements PostService {
+    private static final Logger LOG = LoggerFactory.getLogger(HibernateCarRepository.class.getName());
     private final PostRepository postRepository;
     private final PostMapper postMapper;
     private final OwnerMapper ownerMapper;
@@ -34,15 +38,20 @@ public class SimplePostService implements PostService {
         var post = postMapper.getPostFromPostCreating(postCreating);
         post.getFiles().add(file);
         post.setUser(user);
-        var postSaving = postRepository.save(post);
-        var optionalUser = userService.findById(user.getId());
-        if (postSaving.isPresent() && optionalUser.isPresent()) {
-            var owner = postSaving.get().getCar().getOwner();
-            user = optionalUser.get();
-            user.getOwners().add(owner);
-            userService.update(user);
+        try {
+            var postSaving = postRepository.save(post);
+            var optionalUser = userService.findById(user.getId());
+            if (optionalUser.isPresent()) {
+                var owner = postSaving.getCar().getOwner();
+                user = optionalUser.get();
+                user.getOwners().add(owner);
+                userService.update(user);
+            }
+            return Optional.of(postSaving);
+        } catch (Exception e) {
+            LOG.info("Неудачная попытка сохранения объявления, Exception in log example", e);
         }
-        return postSaving;
+        return Optional.empty();
     }
 
     @Override
