@@ -29,7 +29,7 @@ public class PostController {
     private final UserService userService;
 
     /**
-     * Вывсети все объявления
+     * Вывезти все объявления
      */
     @GetMapping
     public String getAll(Model model) {
