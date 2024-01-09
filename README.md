@@ -22,7 +22,6 @@
 - Thymeleaf
 - Bootstrap CSS
 - Liquibase 4.15.0
-- Sql2o 1.6.0
 - PostgreSQL 15.1 (драйвер JDBC 42.5.1)
 - checkstyle 10.0.
 
